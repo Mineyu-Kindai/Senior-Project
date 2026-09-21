@@ -5,10 +5,16 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "accelerate>=1.15.0",
+    "bitsandbytes>=0.50.2",
     "jupyterlab>=4.6.3",
     "matplotlib>=3.11.2",
     "numpy>=2.5.3",
     "pandas>=3.0.5",
+    "pyyaml>=6.0.3",
+    "sentencepiece>=0.2.2",
+    "torch==2.14.0",
+    "transformers>=5.17.0",
 ]
 
 [project.scripts]
@@ -18,8 +24,15 @@ senior-project = "senior_project:main"
 requires = ["uv_build>=0.12.15,<0.13.0"]
 build-backend = "uv_build"
 
+[[tool.uv.index]]
+url = "https://pypi.org/simple"
+
 [dependency-groups]
 dev = [
     "ipykernel>=7.3.0",
     "jupyterlab>=4.6.3",
 ]
+
+[[tool.uv.index]]
+url = "https://download.pytorch.org/whl/cu130"
+default = true
