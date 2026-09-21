@@ -1,0 +1,4 @@
+models:
+  - name: Llama-3-Swallow-8B-Instruct
+    modelID: tokyotech-llm/Llama-3-Swallow-8B-Instruct-v0.1
+    purpose: RENNERVATE型Attentionベース防御の対象LLM候補1
