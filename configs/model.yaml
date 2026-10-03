@@ -1,4 +1,5 @@
 models:
   - name: Llama-3-Swallow-8B-Instruct
+    quantization: true
     modelID: tokyotech-llm/Llama-3-Swallow-8B-Instruct-v0.1
-    purpose: RENNERVATE型Attentionベース防御の対象LLM候補1
+    purpose: 量子化の必要あり。RENNERVATE型Attentionベース防御の対象LLM候補1
