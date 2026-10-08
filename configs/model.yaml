@@ -1,5 +1,6 @@
-models:
-  - name: Llama-3-Swallow-8B-Instruct
-    quantization: 8bit
-    modelID: tokyotech-llm/Llama-3-Swallow-8B-Instruct-v0.1
-    purpose: 量子化の必要あり。RENNERVATE型Attentionベース防御の対象LLM候補1
+model:
+  name: Qwen2.5-3B-Instruct
+  model_id: Qwen/Qwen2.5-3B-Instruct
+  quantization: 4bit-nf4
+  max_input_tokens: 512
+  max_new_tokens: 96
