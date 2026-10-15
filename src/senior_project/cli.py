@@ -56,6 +56,7 @@ def create_parser() -> argparse.ArgumentParser:
         "--output", type=Path, default=PROJECT_ROOT / "models" / "attention_detector.pt"
     )
     train_parser.add_argument("--epochs", type=int, default=40)
+    train_parser.add_argument("--seed", type=int, default=42)
 
     evaluate_parser = subparsers.add_parser(
         "evaluate", help="Compare unfiltered and attention-redacted model responses"
@@ -93,6 +94,7 @@ def main(argv: list[str] | None = None) -> None:
             args.output,
             model_config["model_id"],
             epochs=args.epochs,
+            seed=args.seed,
         )
         print(json.dumps({"checkpoint": str(args.output), **result}, ensure_ascii=False))
         return

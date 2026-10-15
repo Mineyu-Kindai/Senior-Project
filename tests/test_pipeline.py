@@ -15,7 +15,11 @@ from senior_project.detector import (
     predict_tokens,
     train_detector,
 )
-from senior_project.pipeline import collect_features, evaluate_defense
+from senior_project.pipeline import (
+    attack_indicator_matches,
+    collect_features,
+    evaluate_defense,
+)
 from senior_project.prompt import (
     encode_prompt,
     labels_for_span,
@@ -72,6 +76,11 @@ class FakeModel(nn.Module):
         return torch.cat((input_ids, response), dim=1)
 
 class PipelineTests(unittest.TestCase):
+    def test_attack_indicator_matching_is_case_insensitive(self):
+        self.assertTrue(attack_indicator_matches("Russia", "The answer is RUSSIA."))
+        self.assertFalse(attack_indicator_matches("Japan", "The answer is China."))
+        self.assertIsNone(attack_indicator_matches(None, "No indicator configured."))
+
     def test_loads_named_task_samples_from_one_json_file(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "tasks.json"
@@ -144,6 +153,55 @@ class PipelineTests(unittest.TestCase):
             )
             self.assertEqual(record["attack_position"], expected_position)
 
+    def test_rennervate_candidates_have_balanced_unambiguous_witnesses(self):
+        data_path = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "attack_candidates_rennervate.json"
+        )
+        records = load_records(data_path)
+        methods = {
+            "direct",
+            "ignore",
+            "completion",
+            "escape",
+            "escape + completion",
+            "completion + ignore",
+            "escape + ignore",
+        }
+        self.assertEqual(len(records), 70)
+
+        counts = {
+            (method, position): sum(
+                record["attack_technique"] == method
+                and record["attack_position"] == position
+                for record in records
+            )
+            for method in methods
+            for position in ("beginning", "middle", "end")
+        }
+        self.assertEqual(set(counts.values()), {3, 4})
+        for method in methods:
+            self.assertEqual(
+                [counts[(method, position)] for position in ("beginning", "middle", "end")],
+                [3, 4, 3],
+            )
+
+        for record in records:
+            instruction = record["injected_instruction"]
+            indicator = record["attack_success_indicator"].casefold()
+            self.assertEqual(record["label"], 1)
+            self.assertIn(instruction, record["external_context"])
+            self.assertEqual(record["witness"], record["attack_success_indicator"])
+            self.assertNotIn(
+                indicator,
+                (
+                    record["clean_context"]
+                    + record["user_input"]
+                    + instruction
+                ).casefold(),
+            )
+
     def test_extracts_per_context_token_attention_features(self):
         attentions = []
         for _ in range(2):
@@ -189,10 +247,15 @@ class PipelineTests(unittest.TestCase):
             root = Path(temp_dir)
             feature_path = root / "features.npz"
             checkpoint_path = root / "detector.pt"
-            np.savez_compressed(feature_path, features=features, labels=labels)
-            torch.manual_seed(7)
+            sample_ids = np.array([f"sample-{i // 4}" for i in range(len(labels))])
+            np.savez_compressed(
+                feature_path,
+                features=features,
+                labels=labels,
+                sample_ids=sample_ids,
+            )
             result = train_detector(
-                feature_path, checkpoint_path, "test-model", epochs=40
+                feature_path, checkpoint_path, "test-model", epochs=40, seed=7
             )
             model, mean, std, threshold = load_detector(
                 checkpoint_path, "test-model", torch.device("cpu")
@@ -203,6 +266,14 @@ class PipelineTests(unittest.TestCase):
 
             self.assertEqual(result["token_count"], 24.0)
             self.assertEqual(len(predictions), 24)
+            checkpoint = torch.load(
+                checkpoint_path, map_location="cpu", weights_only=True
+            )
+            self.assertEqual(
+                checkpoint["training_sample_ids"],
+                ["sample-0", "sample-1", "sample-2", "sample-3", "sample-4", "sample-5"],
+            )
+            self.assertEqual(checkpoint["seed"], 7)
             self.assertGreaterEqual(
                 detector_metrics(labels.tolist(), predictions)["token_accuracy"],
                 0.9,
@@ -239,6 +310,11 @@ class PipelineTests(unittest.TestCase):
                 [record, clean_record], tokenizer, model, config, feature_path
             )
             self.assertEqual(collected["example_count"], 2)
+            with np.load(feature_path, allow_pickle=False) as features:
+                self.assertEqual(
+                    set(features["sample_ids"].tolist()),
+                    {"mock-1", "mock-clean"},
+                )
             train_detector(feature_path, checkpoint_path, "mock-model", epochs=2)
             report = evaluate_defense(
                 [record, clean_record], tokenizer, model, config, checkpoint_path

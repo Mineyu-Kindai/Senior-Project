@@ -26,10 +26,16 @@ def train_detector(
     model_id: str,
     epochs: int = 40,
     learning_rate: float = 1e-3,
+    seed: int = 42,
 ) -> dict[str, float]:
     with np.load(feature_path, allow_pickle=False) as dataset:
         features = torch.from_numpy(dataset["features"].astype(np.float32))
         labels = torch.from_numpy(dataset["labels"].astype(np.int64))
+        sample_ids = (
+            dataset["sample_ids"].astype(str).tolist()
+            if "sample_ids" in dataset
+            else []
+        )
 
     if features.ndim != 2 or labels.ndim != 1 or len(features) != len(labels):
         raise ValueError("Feature file must contain [tokens, features] and [tokens] labels")
@@ -41,10 +47,13 @@ def train_detector(
         )
     if epochs < 1:
         raise ValueError("epochs must be greater than zero")
+    if sample_ids and len(sample_ids) != len(labels):
+        raise ValueError("Feature file sample_ids must match the token label count")
 
     mean = features.mean(dim=0)
     std = features.std(dim=0, unbiased=False).clamp_min(1e-6)
     normalized = (features - mean) / std
+    torch.manual_seed(seed)
     model = AttentionTokenClassifier(features.shape[1])
     class_weights = len(labels) / (2 * class_counts.float())
     loss_fn = nn.CrossEntropyLoss(weight=class_weights)
@@ -72,6 +81,15 @@ def train_detector(
             "std": std,
             "state_dict": model.state_dict(),
             "threshold": 0.5,
+            "training_sample_ids": sorted(set(sample_ids)),
+            "training_token_count": len(labels),
+            "training_class_counts": {
+                "clean": int(class_counts[0]),
+                "injected": int(class_counts[1]),
+            },
+            "training_epochs": epochs,
+            "learning_rate": learning_rate,
+            "seed": seed,
         },
         output_path,
     )

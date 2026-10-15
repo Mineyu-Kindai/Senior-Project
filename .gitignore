@@ -12,6 +12,7 @@ wheels/
 # Generated attention data and model checkpoints
 data/*.npz
 data/evaluation.json
+data/evaluation_*.json
 models/
 
 Rennervate/

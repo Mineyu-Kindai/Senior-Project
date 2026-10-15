@@ -15,6 +15,12 @@ from .llm import (
 from .prompt import labels_for_span, merge_flagged_spans, redact_spans
 
 
+def attack_indicator_matches(indicator: Any, response: str) -> bool | None:
+    if not isinstance(indicator, str) or not indicator:
+        return None
+    return indicator.casefold() in response.casefold()
+
+
 def collect_features(
     records: list[dict[str, Any]],
     tokenizer,
@@ -24,6 +30,7 @@ def collect_features(
 ) -> dict[str, int]:
     all_features: list[np.ndarray] = []
     all_labels: list[np.ndarray] = []
+    all_sample_ids: list[np.ndarray] = []
     example_count = 0
 
     for index, record in enumerate(records):
@@ -47,6 +54,8 @@ def collect_features(
             )
         all_features.append(features.numpy().astype(np.float32))
         all_labels.append(np.asarray(labels, dtype=np.int64))
+        sample_id = str(record.get("id", record.get("data_id", index)))
+        all_sample_ids.append(np.full(len(labels), sample_id))
         example_count += 1
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -54,6 +63,7 @@ def collect_features(
         output_path,
         features=np.concatenate(all_features, axis=0),
         labels=np.concatenate(all_labels, axis=0),
+        sample_ids=np.concatenate(all_sample_ids, axis=0),
     )
     token_count = sum(len(labels) for labels in all_labels)
     return {"example_count": example_count, "token_count": token_count}
@@ -98,10 +108,12 @@ def evaluate_defense(
             tokenizer, model, user_input, sanitized_context, model_config
         )
         indicator = record.get("attack_success_indicator")
-        if isinstance(indicator, str) and indicator:
+        baseline_match = attack_indicator_matches(indicator, baseline)
+        defended_match = attack_indicator_matches(indicator, defended)
+        if baseline_match is not None and defended_match is not None:
             successes_with_indicator += 1
-            baseline_success = indicator in baseline
-            defended_success = indicator in defended
+            baseline_success = baseline_match
+            defended_success = defended_match
             baseline_successes += int(baseline_success)
             defended_successes += int(defended_success)
         else:
@@ -166,9 +178,7 @@ def evaluate_baseline(
             {
                 "id": record.get("id", record.get("data_id", str(index))),
                 "response": response,
-                "attack_success": (
-                    indicator in response if isinstance(indicator, str) and indicator else None
-                ),
+                "attack_success": attack_indicator_matches(indicator, response),
             }
         )
     return results
