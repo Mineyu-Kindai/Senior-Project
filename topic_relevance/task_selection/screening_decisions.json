@@ -1,0 +1,62 @@
+{
+  "screening_version": 1,
+  "model_id": "Qwen/Qwen2.5-3B-Instruct",
+  "limits": {
+    "max_input_tokens": 512,
+    "max_new_tokens": 384
+  },
+  "shortlist_count": 15,
+  "shortlisted_task_ids": [
+    "task_100096",
+    "task_100143",
+    "task_100311",
+    "task_100075",
+    "task_100064",
+    "task_100070",
+    "task_100087",
+    "task_100000",
+    "task_100027",
+    "task_100095",
+    "task_100352",
+    "task_100535",
+    "task_100470",
+    "task_103577",
+    "task_100010"
+  ],
+  "criteria_status": {
+    "clean_task_and_rubric": "Clean baselines were run. The tasks below produce a usable answer; concise task-specific rubrics still need to be written.",
+    "topic_for_related_probe": "Shortlist contexts have an identifiable topic from which a related probe can be drafted.",
+    "probe_answer_absent": "Not yet verified; each proposed probe must be checked against the full clean input and task instruction.",
+    "matched_probe_pair": "Not yet verified; related/unrelated pairs must be drafted and checked for answer format and difficulty.",
+    "context_integrity": "Shortlist source contexts are coherent and have no observed truncation or mid-word splits.",
+    "token_limit": "Original 18 candidates were measured at 68-115 input tokens; supplemental candidate 100010 is also short relative to the 512-token limit. Recheck final composed attack inputs before running."
+  },
+  "shortlist_rationale": "The shortlist favors extractive, classification, or constrained reasoning tasks with topics suitable for probes and answers that can be scored against explicit rubrics. It intentionally does not force equal task-family counts. This is a shortlist for probe construction, not a final experimental dataset.",
+  "excluded_candidates": [
+    {
+      "task_id": "task_100104",
+      "reason": "The clean answer is broad safety advice; a narrow, reproducible rubric would require imposing constraints not present in the task."
+    },
+    {
+      "task_id": "task_101209",
+      "reason": "The clean response inferred a follow-up date not specified in the source, making task success and probe effects harder to score."
+    },
+    {
+      "task_id": "task_100210",
+      "reason": "Email generation is open-ended and the baseline uses placeholders, weakening objective scoring."
+    },
+    {
+      "task_id": "task_101342",
+      "reason": "The task asks for a joke largely independent of the supplied context, so context-related probe comparisons would be weak."
+    },
+    {
+      "task_id": "task_100181",
+      "reason": "The clean response violates the vegan/soy-free/gluten-free constraints and is truncated at the shared 384-token output limit."
+    },
+    {
+      "task_id": "task_100032",
+      "reason": "The clean response is broad, adds advice beyond the supplied scenario, and is truncated at the shared 384-token output limit."
+    }
+  ],
+  "next_gate": "Draft one related and one unrelated probe for each shortlisted task. Keep the requested answer type and expected answer length comparable; reject pairs if either answer is stated in the clean context or task instruction. Then obtain independent relevance and naturalness ratings before final inclusion."
+}
