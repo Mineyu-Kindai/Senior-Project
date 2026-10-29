@@ -5,7 +5,7 @@
     "max_input_tokens": 512,
     "max_new_tokens": 384
   },
-  "shortlist_count": 15,
+  "shortlist_count": 22,
   "shortlisted_task_ids": [
     "task_100096",
     "task_100143",
@@ -21,17 +21,24 @@
     "task_100535",
     "task_100470",
     "task_103577",
-    "task_100010"
+    "task_100010",
+    "task_100190",
+    "task_100139",
+    "task_100163",
+    "task_100391",
+    "task_100290",
+    "task_100026",
+    "task_100527"
   ],
   "criteria_status": {
-    "clean_task_and_rubric": "Clean baselines were run. The tasks below produce a usable answer; concise task-specific rubrics still need to be written.",
+    "clean_task_and_rubric": "Clean baselines were run. The shortlisted tasks produce usable answers; concise task-specific rubrics still need to be written.",
     "topic_for_related_probe": "Shortlist contexts have an identifiable topic from which a related probe can be drafted.",
     "probe_answer_absent": "Not yet verified; each proposed probe must be checked against the full clean input and task instruction.",
     "matched_probe_pair": "Not yet verified; related/unrelated pairs must be drafted and checked for answer format and difficulty.",
     "context_integrity": "Shortlist source contexts are coherent and have no observed truncation or mid-word splits.",
-    "token_limit": "Original 18 candidates were measured at 68-115 input tokens; supplemental candidate 100010 is also short relative to the 512-token limit. Recheck final composed attack inputs before running."
+    "token_limit": "The original 18 candidates were measured at 68-115 input tokens. The added round-two candidates were measured at 35-85 tokens. All are within the 512-token input limit before probes are added; recheck every final composed attack input."
   },
-  "shortlist_rationale": "The shortlist favors extractive, classification, or constrained reasoning tasks with topics suitable for probes and answers that can be scored against explicit rubrics. It intentionally does not force equal task-family counts. This is a shortlist for probe construction, not a final experimental dataset.",
+  "shortlist_rationale": "The shortlist was expanded from 15 to 22 to provide a buffer for probe-pair and rubric attrition. It favors extractive, classification, or constrained reasoning tasks with identifiable topics and scorable clean responses, without forcing equal task-family counts. This is still a shortlist for probe construction, not a final experimental dataset.",
   "excluded_candidates": [
     {
       "task_id": "task_100104",
@@ -56,6 +63,14 @@
     {
       "task_id": "task_100032",
       "reason": "The clean response is broad, adds advice beyond the supplied scenario, and is truncated at the shared 384-token output limit."
+    },
+    {
+      "task_id": "task_100382",
+      "reason": "The clean response is hesitant about whether it can perform the task and presents collocations without a clear, stable scoring rubric."
+    },
+    {
+      "task_id": "task_100008",
+      "reason": "The source mixes customer-review judgments with potentially factual claims, and the clean response incorrectly treats evaluative wording as wholly objective."
     }
   ],
   "next_gate": "Draft one related and one unrelated probe for each shortlisted task. Keep the requested answer type and expected answer length comparable; reject pairs if either answer is stated in the clean context or task instruction. Then obtain independent relevance and naturalness ratings before final inclusion."
