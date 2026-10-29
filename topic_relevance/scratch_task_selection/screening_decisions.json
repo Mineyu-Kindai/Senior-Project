@@ -31,7 +31,7 @@
     "task_100527"
   ],
   "criteria_status": {
-    "clean_task_and_rubric": "Clean baselines were run. The shortlisted tasks produce usable answers; concise task-specific rubrics still need to be written.",
+    "clean_task_and_rubric": "Clean baselines and draft task rubrics are available for all shortlist tasks. Manual review found that 100026 and 100527 miss required extraction items; 100163 lists the right years with duplicates; 100010 has an ambiguous task interpretation. See ../probe_design/candidate_workbook.json before accepting any task.",
     "topic_for_related_probe": "Shortlist contexts have an identifiable topic from which a related probe can be drafted.",
     "probe_answer_absent": "Not yet verified; each proposed probe must be checked against the full clean input and task instruction.",
     "matched_probe_pair": "Not yet verified; related/unrelated pairs must be drafted and checked for answer format and difficulty.",
@@ -73,5 +73,5 @@
       "reason": "The source mixes customer-review judgments with potentially factual claims, and the clean response incorrectly treats evaluative wording as wholly objective."
     }
   ],
-  "next_gate": "Draft one related and one unrelated probe for each shortlisted task. Keep the requested answer type and expected answer length comparable; reject pairs if either answer is stated in the clean context or task instruction. Then obtain independent relevance and naturalness ratings before final inclusion."
+  "next_gate": "Review and approve the draft rubrics and probe pairs in ../probe_design/candidate_workbook.json. Re-score clean baselines, especially 100010, 100026, 100527, and 100163. Then obtain independent human relevance and naturalness ratings, confirm difficulty and answer-format matching, and keep only pairs with a clear relevance contrast."
 }
