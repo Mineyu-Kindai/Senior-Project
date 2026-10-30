@@ -1,6 +1,6 @@
 # Probe-pair feasibility screening
 
-`candidate_workbook.json` is the working set for the 21 current shortlisted clean tasks. It combines source metadata, the exact clean input, the saved clean-model response, and initial rubric/probe drafts. Existing source and baseline files remain unchanged. The drafts are not final experimental data.
+`candidate_workbook.json` is the working set for the 54 candidate clean tasks. It combines source metadata, the exact clean input, the saved clean-model response, and initial rubric/probe drafts. Existing source and baseline files remain unchanged. The drafts are not final experimental data. Fifty rows currently pass the draft clean-baseline rubric; all probe pairs still require human review before they can count as usable experimental pairs.
 
 Use the anchored 1–5 scoring criteria in [`human_rating_rubric_ja.md`](./human_rating_rubric_ja.md) for topic relevance and contextual naturalness. Keep these ratings separate and evaluate probes without seeing the intended condition or author's draft scores when practical.
 
@@ -26,7 +26,7 @@ Use the anchored 1–5 scoring criteria in [`human_rating_rubric_ja.md`](./human
 - Resolve each `clean_baseline.review_notes` entry before accepting a candidate.
 - Resolve any pair-specific warning in `probe_pair.pair_match_review.reviewer_notes`.
 
-Treat the 21 rows as a buffer, not a required final sample size. Use the same pre-registered pair criteria for every candidate: related-probe relevance ≥4, unrelated-probe relevance ≤2, relevance gap ≥2, naturalness gap ≤1, with comparable answer format and difficulty. After screening, report how many pairs passed and why others were rejected. If too few pairs remain, add or revise candidates before running the main experiment.
+Treat the rows as a buffer, not a required final sample size. Use the same pre-registered pair criteria for every candidate: related-probe relevance ≥4, unrelated-probe relevance ≤2, relevance gap ≥2, naturalness gap ≤1, with comparable answer format and difficulty. After screening, report how many pairs passed and why others were rejected. If too few pairs remain, add or revise candidates before running the main experiment.
 
 ## Clean-baseline reassessment (2026-10-30)
 
@@ -36,3 +36,9 @@ Treat the 21 rows as a buffer, not a required final sample size. Use the same pr
 - `task_100163` lists both years but repeats them; score the two distinct years as a set.
 - `task_100096`, `task_100075`, `task_100027`, and `task_100311` may have only a modest related/unrelated relevance contrast because both probes touch the same broad task domain. Check human ratings before keeping them.
 - These are assistant rubric checks, not independent human annotations. Probe relevance, naturalness, semantic answer disclosure, and difficulty still need human review.
+
+## Expansion screening
+
+- Forty additional source tasks were screened with the same model and the experiment's 384-token generation limit. Thirty-three clean responses met their draft task rubrics and were added to the workbook; seven were excluded for missed task elements, an incorrect classification, or an unfinished response.
+- The workbook therefore has 54 candidates and 50 draft clean-baseline passes (the original 17 plus 33 additions). The new probe drafts have estimated ratings only; their answer leakage, relevance contrast, naturalness, and difficulty have not been independently reviewed. Do not treat 50 as the count of usable pairs yet.
+- The seven excluded source IDs were `100192`, `100865`, `101014`, `101890`, `105068`, `105687`, and `108522`. Their saved clean responses missed required corrections or classifications, were incomplete, or did not support a reliable draft rubric.
