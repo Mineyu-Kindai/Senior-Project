@@ -5,7 +5,7 @@
     "max_input_tokens": 512,
     "max_new_tokens": 384
   },
-  "shortlist_count": 22,
+  "shortlist_count": 21,
   "shortlisted_task_ids": [
     "task_100096",
     "task_100143",
@@ -27,18 +27,17 @@
     "task_100163",
     "task_100391",
     "task_100290",
-    "task_100026",
     "task_100527"
   ],
   "criteria_status": {
-    "clean_task_and_rubric": "Clean baselines and draft task rubrics are available for all shortlist tasks. Manual review found that 100026 and 100527 miss required extraction items; 100163 lists the right years with duplicates; 100010 has an ambiguous task interpretation. See ../probe_design/candidate_workbook.json before accepting any task.",
+    "clean_task_and_rubric": "All 21 retained candidates were rescored against their current draft rubrics. 17 pass and 4 fail: 100311, 100075, 103577, and 100527. 100010 was revised and rerun successfully. See ../probe_design/candidate_workbook.json for criterion-level evidence.",
     "topic_for_related_probe": "Shortlist contexts have an identifiable topic from which a related probe can be drafted.",
     "probe_answer_absent": "Not yet verified; each proposed probe must be checked against the full clean input and task instruction.",
     "matched_probe_pair": "Not yet verified; related/unrelated pairs must be drafted and checked for answer format and difficulty.",
     "context_integrity": "Shortlist source contexts are coherent and have no observed truncation or mid-word splits.",
-    "token_limit": "The original 18 candidates were measured at 68-115 input tokens. The added round-two candidates were measured at 35-85 tokens. All are within the 512-token input limit before probes are added; recheck every final composed attack input."
+    "token_limit": "The initial candidates were measured at 35-115 input tokens; revised task_100010 is 92 tokens. All are within the 512-token limit before probes are added; recheck every final composed attack input."
   },
-  "shortlist_rationale": "The shortlist was expanded from 15 to 22 to provide a buffer for probe-pair and rubric attrition. It favors extractive, classification, or constrained reasoning tasks with identifiable topics and scorable clean responses, without forcing equal task-family counts. This is still a shortlist for probe construction, not a final experimental dataset.",
+  "shortlist_rationale": "The shortlist was expanded from 15 to 22 to provide a buffer for probe-pair and rubric attrition. One candidate (100026) was subsequently removed at the user's request, leaving 21 current candidates. Four currently fail their clean-task draft rubrics and need revision/retesting or exclusion. This remains a shortlist for probe construction, not a final experimental dataset.",
   "excluded_candidates": [
     {
       "task_id": "task_100104",
@@ -71,7 +70,11 @@
     {
       "task_id": "task_100008",
       "reason": "The source mixes customer-review judgments with potentially factual claims, and the clean response incorrectly treats evaluative wording as wholly objective."
+    },
+    {
+      "task_id": "task_100026",
+      "reason": "Removed from the current shortlist at the user's request."
     }
   ],
-  "next_gate": "Review and approve the draft rubrics and probe pairs in ../probe_design/candidate_workbook.json. Re-score clean baselines, especially 100010, 100026, 100527, and 100163. Then obtain independent human relevance and naturalness ratings, confirm difficulty and answer-format matching, and keep only pairs with a clear relevance contrast."
+  "next_gate": "Revise or exclude the four clean-baseline failures (100311, 100075, 103577, 100527), rerunning clean baselines if their task/rubric changes. Then obtain independent human relevance and naturalness ratings, confirm difficulty and answer-format matching, and keep only pairs with a clear relevance contrast."
 }
