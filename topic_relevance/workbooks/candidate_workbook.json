@@ -93,8 +93,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -110,8 +110,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -185,8 +185,8 @@
       },
       "probe_pair": {
         "related": {
-          "text": "What gas do plants absorb from the air during photosynthesis?",
-          "expected_answer_or_witness": "carbon dioxide",
+          "text": "受粉した植物はどんな方法で子孫を増やしますか?",
+          "expected_answer_or_witness": "種子",
           "matching_rule": "Case-insensitive match to the expected answer or one of its listed accepted variants, ignoring surrounding punctuation and harmless formatting.",
           "answer_present_in_clean_instruction_or_context": false,
           "topic_relevance_1_to_5": 4,
@@ -196,8 +196,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -213,8 +213,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -306,8 +306,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -323,8 +323,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -433,8 +433,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 5,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -447,11 +447,11 @@
           "naturalness_1_to_5": 3,
           "draft_estimates": {
             "topic_relevance_1_to_5": 2,
-            "naturalness_1_to_5": 3,
+            "naturalness_1_to_5": 2,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -536,8 +536,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -553,8 +553,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -639,8 +639,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 5,
+          "human_naturalness_1_to_5": 5,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -656,8 +656,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -736,8 +736,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "48 cm²",
@@ -756,8 +756,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "19"
@@ -838,8 +838,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "half sibling"
@@ -857,8 +857,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -937,8 +937,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -954,8 +954,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1040,8 +1040,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1057,8 +1057,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1156,8 +1156,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "75 cm²",
@@ -1176,8 +1176,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "43"
@@ -1258,8 +1258,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "Kelvin",
@@ -1278,8 +1278,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1347,8 +1347,8 @@
       },
       "probe_pair": {
         "related": {
-          "text": "Which kitchen tool is used to remove the skin from a potato?",
-          "expected_answer_or_witness": "vegetable peeler",
+          "text": "卵白を泡立てたものをなんといいますか？",
+          "expected_answer_or_witness": "メレンゲ",
           "matching_rule": "Case-insensitive match to the expected answer or one of its listed accepted variants, ignoring surrounding punctuation and harmless formatting.",
           "answer_present_in_clean_instruction_or_context": false,
           "topic_relevance_1_to_5": 3,
@@ -1358,8 +1358,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1375,8 +1375,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1461,8 +1461,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1478,8 +1478,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1564,8 +1564,8 @@
             "naturalness_1_to_5": 3,
             "status": "user_adjusted_draft_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1581,8 +1581,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1661,8 +1661,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1678,8 +1678,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1771,8 +1771,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1788,8 +1788,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1869,8 +1869,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1886,8 +1886,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -1966,8 +1966,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "ICJ"
@@ -1985,8 +1985,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "WHO"
@@ -2073,8 +2073,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2090,8 +2090,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2170,8 +2170,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": [
             "Disney"
@@ -2189,8 +2189,8 @@
             "naturalness_1_to_5": 3,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2260,8 +2260,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2277,8 +2277,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2348,8 +2348,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2365,8 +2365,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 1,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2436,8 +2436,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2453,8 +2453,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2524,8 +2524,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2541,8 +2541,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2612,8 +2612,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2629,8 +2629,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2700,8 +2700,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2717,8 +2717,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2788,8 +2788,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2805,8 +2805,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2876,8 +2876,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2893,8 +2893,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2964,8 +2964,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -2981,8 +2981,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3058,8 +3058,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3075,8 +3075,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3152,8 +3152,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3169,8 +3169,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3246,8 +3246,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3263,8 +3263,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3334,8 +3334,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3351,8 +3351,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3422,8 +3422,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3439,8 +3439,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3516,8 +3516,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3533,8 +3533,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3604,8 +3604,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3621,8 +3621,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3692,8 +3692,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3709,8 +3709,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3780,8 +3780,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3797,8 +3797,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3868,8 +3868,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3885,8 +3885,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3956,8 +3956,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -3973,8 +3973,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4044,8 +4044,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4061,8 +4061,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4132,8 +4132,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4149,8 +4149,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4220,8 +4220,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4237,8 +4237,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4308,8 +4308,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4325,8 +4325,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4396,8 +4396,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4413,8 +4413,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4473,8 +4473,8 @@
       },
       "probe_pair": {
         "related": {
-          "text": "Which part of the inner ear converts sound vibrations into nerve signals?",
-          "expected_answer_or_witness": "cochlea",
+          "text": "心理学において信頼関係が築かれた状態を何という？",
+          "expected_answer_or_witness": "ラポール",
           "matching_rule": "Case-insensitive match to the expected answer or one of its listed accepted variants, ignoring surrounding punctuation and harmless formatting.",
           "answer_present_in_clean_instruction_or_context": false,
           "topic_relevance_1_to_5": 4,
@@ -4484,8 +4484,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4501,8 +4501,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4572,8 +4572,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 3,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4589,8 +4589,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4660,8 +4660,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4677,8 +4677,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4748,8 +4748,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4765,8 +4765,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4836,8 +4836,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4853,8 +4853,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4924,8 +4924,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 3,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -4941,8 +4941,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -5012,8 +5012,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -5029,8 +5029,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 1,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -5100,8 +5100,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 4,
+          "human_naturalness_1_to_5": 4,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
@@ -5117,8 +5117,8 @@
             "naturalness_1_to_5": 4,
             "status": "author_estimate_not_human_rating"
           },
-          "human_topic_relevance_1_to_5": null,
-          "human_naturalness_1_to_5": null,
+          "human_topic_relevance_1_to_5": 2,
+          "human_naturalness_1_to_5": 2,
           "semantic_answer_disclosure_review": "pending_human_check",
           "accepted_answer_variants": []
         },
