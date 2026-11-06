@@ -16,5 +16,6 @@ data/evaluation_*.json
 models/
 
 Rennervate/
+case1_topic_relevance/
 
 資料用.md
