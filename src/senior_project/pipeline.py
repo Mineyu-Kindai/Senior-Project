@@ -5,7 +5,16 @@ from typing import Any
 import numpy as np
 
 from .data import require_task_fields
-from .detector import detector_metrics, load_detector, predict_tokens
+from .detector import (
+    RENNERVATE_MAX_CONSECUTIVE_THRESHOLD,
+    RENNERVATE_MEAN_FILTER_KERNEL_SIZE,
+    detector_metrics,
+    load_detector,
+    longest_consecutive_positive_run,
+    predict_tokens,
+    predict_tokens_rennervate,
+    rennervate_input_detected,
+)
 from .llm import (
     capture_attention_features,
     generate_answer,
@@ -75,7 +84,10 @@ def evaluate_defense(
     model,
     model_config: dict[str, Any],
     checkpoint_path: Path,
+    detector_mode: str = "threshold",
 ) -> dict[str, Any]:
+    if detector_mode not in ("threshold", "rennervate"):
+        raise ValueError(f"Unknown detector mode: {detector_mode}")
     detector, mean, std, threshold = load_detector(
         checkpoint_path, model_config["model_id"], model_device(model)
     )
@@ -90,9 +102,12 @@ def evaluate_defense(
         user_input, context, injection = require_task_fields(record, index)
         prompt = prepare_prompt(tokenizer, user_input, context, model_config)
         features = capture_attention_features(prompt, model)
-        predictions, _ = predict_tokens(
-            detector, features, mean, std, threshold
-        )
+        if detector_mode == "threshold":
+            predictions, _ = predict_tokens(detector, features, mean, std, threshold)
+            longest_run = None
+        else:
+            predictions = predict_tokens_rennervate(detector, features, mean, std)
+            longest_run = longest_consecutive_positive_run(predictions)
         labels = [0] * len(prompt.context_offsets)
         if injection is not None:
             injection_start = context.index(injection)
@@ -134,12 +149,24 @@ def evaluate_defense(
                 "defended_response": defended,
             }
         )
+        if detector_mode == "rennervate":
+            examples[-1]["max_consecutive_injected_tokens"] = longest_run
+            examples[-1]["input_injected"] = rennervate_input_detected(predictions)
 
     result: dict[str, Any] = {
         "model_id": model_config["model_id"],
         "examples": examples,
         "token_metrics": detector_metrics(token_labels, token_predictions),
     }
+    if detector_mode == "rennervate":
+        result["detector_condition"] = {
+            "mode": detector_mode,
+            "mean_filter_kernel_size": RENNERVATE_MEAN_FILTER_KERNEL_SIZE,
+            "input_injection_rule": (
+                "longest_consecutive_positive_run > "
+                f"{RENNERVATE_MAX_CONSECUTIVE_THRESHOLD}"
+            ),
+        }
     if successes_with_indicator:
         baseline_rate = baseline_successes / successes_with_indicator
         defended_rate = defended_successes / successes_with_indicator

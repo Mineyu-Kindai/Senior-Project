@@ -4,6 +4,11 @@ from typing import Any
 import numpy as np
 import torch
 from torch import nn
+from torch.nn import functional as F
+
+
+RENNERVATE_MEAN_FILTER_KERNEL_SIZE = 5
+RENNERVATE_MAX_CONSECUTIVE_THRESHOLD = 5
 
 
 class AttentionTokenClassifier(nn.Module):
@@ -136,6 +141,54 @@ def predict_tokens(
         probabilities = logits.softmax(dim=1)[:, 1]
     scores = probabilities.cpu().tolist()
     return [int(score >= threshold) for score in scores], scores
+
+
+def mean_filter_token_logits(
+    logits: torch.Tensor, kernel_size: int = RENNERVATE_MEAN_FILTER_KERNEL_SIZE
+) -> torch.Tensor:
+    if logits.ndim != 2 or logits.shape[1] != 2 or logits.shape[0] == 0:
+        raise ValueError("Logits must have shape [non-empty tokens, 2]")
+    if kernel_size < 1 or kernel_size % 2 == 0:
+        raise ValueError("Mean-filter kernel size must be a positive odd integer")
+
+    padding = kernel_size // 2
+    token_logits = logits.transpose(0, 1).unsqueeze(0)
+    padded_logits = F.pad(token_logits, (padding, padding), mode="replicate")
+    filtered = F.avg_pool1d(padded_logits, kernel_size, stride=1)
+    return filtered.squeeze(0).transpose(0, 1)
+
+
+def predict_tokens_rennervate(
+    model: AttentionTokenClassifier,
+    features: torch.Tensor,
+    mean: torch.Tensor,
+    std: torch.Tensor,
+    kernel_size: int = RENNERVATE_MEAN_FILTER_KERNEL_SIZE,
+) -> list[int]:
+    with torch.inference_mode():
+        logits = model((features.to(mean.device) - mean) / std)
+        filtered_logits = mean_filter_token_logits(logits, kernel_size)
+    return filtered_logits.argmax(dim=1).cpu().tolist()
+
+
+def longest_consecutive_positive_run(predictions: list[int]) -> int:
+    if any(prediction not in (0, 1) for prediction in predictions):
+        raise ValueError("Token predictions must contain only binary labels")
+    longest = current = 0
+    for prediction in predictions:
+        if prediction:
+            current += 1
+            longest = max(longest, current)
+        else:
+            current = 0
+    return longest
+
+
+def rennervate_input_detected(predictions: list[int]) -> bool:
+    return (
+        longest_consecutive_positive_run(predictions)
+        > RENNERVATE_MAX_CONSECUTIVE_THRESHOLD
+    )
 
 
 def detector_metrics(labels: list[int], predictions: list[int]) -> dict[str, float | int]:

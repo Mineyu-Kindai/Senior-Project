@@ -12,7 +12,10 @@ from senior_project.data import load_records, select_split
 from senior_project.detector import (
     detector_metrics,
     load_detector,
+    longest_consecutive_positive_run,
+    mean_filter_token_logits,
     predict_tokens,
+    rennervate_input_detected,
     train_detector,
 )
 from senior_project.pipeline import (
@@ -76,6 +79,44 @@ class FakeModel(nn.Module):
         return torch.cat((input_ids, response), dim=1)
 
 class PipelineTests(unittest.TestCase):
+    def test_rennervate_mean_filter_suppresses_an_isolated_positive_token(self):
+        clean_logits = torch.tensor([2.0, 0.0])
+        injected_logits = torch.tensor([0.0, 2.0])
+        logits = torch.stack(
+            [
+                clean_logits,
+                clean_logits,
+                clean_logits,
+                injected_logits,
+                clean_logits,
+                clean_logits,
+                clean_logits,
+            ]
+        )
+
+        predictions = mean_filter_token_logits(logits).argmax(dim=1).tolist()
+
+        self.assertEqual(predictions, [0] * len(logits))
+
+    def test_rennervate_mean_filter_preserves_a_sustained_positive_run(self):
+        clean_logits = torch.tensor([2.0, 0.0])
+        injected_logits = torch.tensor([0.0, 2.0])
+        logits = torch.stack(
+            [clean_logits, *([injected_logits] * 5), clean_logits, clean_logits]
+        )
+
+        predictions = mean_filter_token_logits(logits).argmax(dim=1).tolist()
+
+        self.assertEqual(predictions, [0, 1, 1, 1, 1, 1, 0, 0])
+
+    def test_rennervate_input_detection_requires_a_run_longer_than_five(self):
+        self.assertEqual(longest_consecutive_positive_run([0, 1, 1, 1, 1, 1, 0]), 5)
+        self.assertEqual(longest_consecutive_positive_run([0, 1, 1, 1, 1, 1, 1, 0]), 6)
+        self.assertFalse(rennervate_input_detected([0, 1, 1, 1, 1, 1, 0]))
+        self.assertTrue(rennervate_input_detected([0, 1, 1, 1, 1, 1, 1, 0]))
+        with self.assertRaises(ValueError):
+            longest_consecutive_positive_run([0, 2, 1])
+
     def test_attack_indicator_matching_is_case_insensitive(self):
         self.assertTrue(attack_indicator_matches("Russia", "The answer is RUSSIA."))
         self.assertFalse(attack_indicator_matches("Japan", "The answer is China."))
@@ -319,9 +360,25 @@ class PipelineTests(unittest.TestCase):
             report = evaluate_defense(
                 [record, clean_record], tokenizer, model, config, checkpoint_path
             )
+            rennervate_report = evaluate_defense(
+                [record, clean_record],
+                tokenizer,
+                model,
+                config,
+                checkpoint_path,
+                detector_mode="rennervate",
+            )
 
         self.assertEqual(report["attack_success"]["baseline_rate"], 1.0)
         self.assertEqual(report["attack_success"]["defended_rate"], 1.0)
+        self.assertNotIn("detector_condition", report)
+        self.assertEqual(
+            rennervate_report["detector_condition"]["mean_filter_kernel_size"], 5
+        )
+        self.assertEqual(
+            rennervate_report["examples"][0]["input_injected"],
+            rennervate_report["examples"][0]["max_consecutive_injected_tokens"] > 5,
+        )
         self.assertEqual(
             report["token_metrics"]["true_negative"]
             + report["token_metrics"]["false_positive"],

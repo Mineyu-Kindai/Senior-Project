@@ -61,6 +61,8 @@ Rennervateを参考に、英語のタスク・攻撃データを使い、単一�
 
 `evaluate` はトークンAccuracy / Precision / Recall / FPRと、`attack_success_indicator` を含むレコードについて未加工・防御後の攻撃成功率を報告します。`defense_reduction` は攻撃成功率の相対減少率です。`--split train` と `--split test` で一つのJSONから分離できます。小さなパイロットセットは動作確認用であり、研究上の性能を主張するには独立した大規模テストデータと適切な評価設計が必要です。
 
+`evaluate` は既定で従来のトークンスコア閾値方式を使います。論文のトークン判定条件を使う場合は `--detector-mode rennervate` を指定してください。この方式は2クラスlogitsを幅5・replicate paddingの平均フィルタで平滑化し、各トークンをargmaxで判定します。最長連続数が5を超える場合に入力全体をInjectedと判定し、その判定とは独立に平滑化後の陽性トークンをマスクします。モデル・学習済み分類器は共通で、従来方式は `--detector-mode threshold` で引き続き利用できます。これは検知条件を合わせる変更であり、既存の隣接範囲の結合や置換によるサニタイズ処理は変更しません。
+
 同梱の70件はパイプライン確認用の小規模パイロットです。再現可能な初期評価のため、train 50件（正常25・攻撃25）、test 20件（正常10・攻撃10）に分離しています。testにはRennervateの7方式（direct / ignore / completion / escape とその組み合わせ）と先頭・中間・末尾の挿入位置を含めています。これは少数例のholdoutであり、方式ごとの性能を確立するにはデータをさらに増やす必要があります。`label` は注入の有無であり、モデルが攻撃に従ったかどうかではありません。実際の攻撃成功は `attack_success_indicator` の一致で測りますが、応答に部分的な影響があるかは応答も確認してください。
 
 学習済みチェックポイントには、使用したモデルID・seed・epoch数・クラスごとのトークン数・訓練サンプルIDを記録します。攻撃候補の探索中はチェックポイントを再学習・上書きせず、候補データはtrain splitに加えず独立した入力ファイルで評価してください。
@@ -83,6 +85,39 @@ uv run python -m senior_project evaluate \
 注意特徴は、入力中の未信頼データに属する各トークンが、同じ未信頼データのクエリからどれだけ注意を受けるかを層・ヘッドごとに平均したものです。検知した連続範囲のみを `[REDACTED UNTRUSTED CONTENT]` に置換し、それ以外の文脈は残します。
 
 CLIの既定モデル設定は [configs/model.yaml](./configs/model.yaml) で変更できます。任意の設定ファイルは `--config` で指定してください。CPU主体の単体テストは `python -m unittest discover -s tests` で実行できます。
+
+### 関連度研究のA/B追試
+
+承認済みの追試条件と自然さを評価に使わない方針は
+[実験プロトコル](./topic_relevance/protocols/ab_followup_20261112.md)を参照してください。
+保存済みマスク介入の再実行前に、生成上限を校正します。
+
+```bash
+uv run python topic_relevance/scripts/run_ab_followup_v1.py calibrate-output-limit
+uv run python topic_relevance/scripts/run_ab_followup_v1.py run-saved-mask-interventions
+```
+
+実験レポートを作成した後、厳密なJSON形式遵守と、応答内にJSONオブジェクトが1つだけある場合のタスク内容正答を分離して再集計できます。
+`--output`には再集計するレポートのパスを指定します。
+
+Bの実験結果の概要は
+[保存済みマスク介入実験 B：結果概要](./topic_relevance/results/saved_mask_intervention_summary_20261112_ja.md)
+を参照してください。
+
+```bash
+uv run python topic_relevance/scripts/run_ab_followup_v1.py \
+  rescore-stored-report \
+  --output topic_relevance/data/experiments/pilot_201_264_saved_mask_interventions_without_task_constraints_v1.json
+```
+
+Aの独立確認には、既存の探索データではなく新しいsource familyを使います。
+現在の64ブロック候補は
+[候補JSON](./topic_relevance/data/candidates/ab_confirmation_64_synthetic_candidates_v1.json)
+、[盲検関連度評価CSV](./topic_relevance/data/human_reviews/ab_confirmation_64_relevance_blinded_v1.csv)、
+および[回答確認CSV](./topic_relevance/data/human_reviews/ab_confirmation_64_single_reviewer_v1.csv)
+にあります。関連度を採点するまでは、別ファイルのunblinding keyを開かないでください。
+全ブロックの人手確認が終わるまでAは実行しません。
+候補生成スクリプトは既存ファイルを上書きしません。`--overwrite`は候補とレビュー内容を作り直す場合に限って使ってください。
 
 ベースライン応答だけを確認する場合は `uv run python -m senior_project baseline` を実行します。既存の `LLMs/run_task.py` と `LLMs/run_task_get_attention.py` は、それぞれベースライン実行とAttention特徴収集の互換ラッパーです。
 

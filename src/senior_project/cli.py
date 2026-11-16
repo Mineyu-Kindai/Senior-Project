@@ -73,6 +73,12 @@ def create_parser() -> argparse.ArgumentParser:
         "--output", type=Path, default=PROJECT_ROOT / "data" / "evaluation.json"
     )
     evaluate_parser.add_argument("--split", choices=("train", "test"))
+    evaluate_parser.add_argument(
+        "--detector-mode",
+        choices=("threshold", "rennervate"),
+        default="threshold",
+        help="Use the existing score threshold or Rennervate-style token conditions",
+    )
 
     baseline_parser = subparsers.add_parser(
         "baseline", help="Run the unfiltered model for a baseline attack measurement"
@@ -113,7 +119,12 @@ def main(argv: list[str] | None = None) -> None:
         return
 
     result = evaluate_defense(
-        records, tokenizer, model, model_config, args.detector
+        records,
+        tokenizer,
+        model,
+        model_config,
+        args.detector,
+        detector_mode=args.detector_mode,
     )
     save_report(result, args.output)
     print(json.dumps({"report": str(args.output), **result}, ensure_ascii=False))
