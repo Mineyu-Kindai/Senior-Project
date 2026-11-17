@@ -75,9 +75,9 @@ def create_parser() -> argparse.ArgumentParser:
     evaluate_parser.add_argument("--split", choices=("train", "test"))
     evaluate_parser.add_argument(
         "--detector-mode",
-        choices=("threshold", "rennervate"),
+        choices=("threshold", "rennervate", "rennervate-remove"),
         default="threshold",
-        help="Use the existing score threshold or Rennervate-style token conditions",
+        help="Choose score threshold, Rennervate-style masking, or token removal",
     )
 
     baseline_parser = subparsers.add_parser(

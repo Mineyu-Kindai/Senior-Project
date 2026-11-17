@@ -63,6 +63,16 @@ Rennervateを参考に、英語のタスク・攻撃データを使い、単一�
 
 `evaluate` は既定で従来のトークンスコア閾値方式を使います。論文のトークン判定条件を使う場合は `--detector-mode rennervate` を指定してください。この方式は2クラスlogitsを幅5・replicate paddingの平均フィルタで平滑化し、各トークンをargmaxで判定します。最長連続数が5を超える場合に入力全体をInjectedと判定し、その判定とは独立に平滑化後の陽性トークンをマスクします。モデル・学習済み分類器は共通で、従来方式は `--detector-mode threshold` で引き続き利用できます。これは検知条件を合わせる変更であり、既存の隣接範囲の結合や置換によるサニタイズ処理は変更しません。
 
+`--detector-mode rennervate-remove` は同じ新検知条件を使い、陽性トークンのIDを除いた残りをデトークン化します。マーカーは挿入せず、入力全体のInjected/Clean判定にかかわらず除去します。結果には除去後の `sanitized_context` を保存します。外部文脈が切り詰められた場合や、文脈の境界を安全に復元できない場合はエラーで停止します。`rennervate` のマーカー置換は変更されません。特徴抽出や分類器は論文と異なるため、論文全体の再現ではありません。
+
+```bash
+uv run python -m senior_project evaluate \
+  --input data/task_samples.json --split test \
+  --detector models/attention_detector_fixed_20261015.pt \
+  --detector-mode rennervate-remove \
+  --output data/evaluation_token_removal.json
+```
+
 同梱の70件はパイプライン確認用の小規模パイロットです。再現可能な初期評価のため、train 50件（正常25・攻撃25）、test 20件（正常10・攻撃10）に分離しています。testにはRennervateの7方式（direct / ignore / completion / escape とその組み合わせ）と先頭・中間・末尾の挿入位置を含めています。これは少数例のholdoutであり、方式ごとの性能を確立するにはデータをさらに増やす必要があります。`label` は注入の有無であり、モデルが攻撃に従ったかどうかではありません。実際の攻撃成功は `attack_success_indicator` の一致で測りますが、応答に部分的な影響があるかは応答も確認してください。
 
 学習済みチェックポイントには、使用したモデルID・seed・epoch数・クラスごとのトークン数・訓練サンプルIDを記録します。攻撃候補の探索中はチェックポイントを再学習・上書きせず、候補データはtrain splitに加えず独立した入力ファイルで評価してください。

@@ -22,6 +22,7 @@ from .llm import (
     prepare_prompt,
 )
 from .prompt import labels_for_span, merge_flagged_spans, redact_spans
+from .token_removal import generate_with_empty_context, remove_flagged_tokens
 
 
 def attack_indicator_matches(indicator: Any, response: str) -> bool | None:
@@ -86,7 +87,7 @@ def evaluate_defense(
     checkpoint_path: Path,
     detector_mode: str = "threshold",
 ) -> dict[str, Any]:
-    if detector_mode not in ("threshold", "rennervate"):
+    if detector_mode not in ("threshold", "rennervate", "rennervate-remove"):
         raise ValueError(f"Unknown detector mode: {detector_mode}")
     detector, mean, std, threshold = load_detector(
         checkpoint_path, model_config["model_id"], model_device(model)
@@ -116,12 +117,18 @@ def evaluate_defense(
                 (injection_start, injection_start + len(injection)),
             )
         spans = merge_flagged_spans(prompt.context_offsets, predictions)
-        sanitized_context = redact_spans(context, spans)
+        if detector_mode == "rennervate-remove":
+            sanitized_context = remove_flagged_tokens(tokenizer, prompt, context, predictions)
+        else:
+            sanitized_context = redact_spans(context, spans)
 
         baseline = generate_answer(tokenizer, model, user_input, context, model_config)
-        defended = generate_answer(
-            tokenizer, model, user_input, sanitized_context, model_config
-        )
+        if detector_mode == "rennervate-remove" and not sanitized_context:
+            defended = generate_with_empty_context(tokenizer, model, user_input, model_config)
+        else:
+            defended = generate_answer(
+                tokenizer, model, user_input, sanitized_context, model_config
+            )
         indicator = record.get("attack_success_indicator")
         baseline_match = attack_indicator_matches(indicator, baseline)
         defended_match = attack_indicator_matches(indicator, defended)
@@ -149,16 +156,19 @@ def evaluate_defense(
                 "defended_response": defended,
             }
         )
-        if detector_mode == "rennervate":
+        if detector_mode in ("rennervate", "rennervate-remove"):
             examples[-1]["max_consecutive_injected_tokens"] = longest_run
             examples[-1]["input_injected"] = rennervate_input_detected(predictions)
+            if detector_mode == "rennervate-remove":
+                del examples[-1]["redacted_spans"]
+                examples[-1]["sanitized_context"] = sanitized_context
 
     result: dict[str, Any] = {
         "model_id": model_config["model_id"],
         "examples": examples,
         "token_metrics": detector_metrics(token_labels, token_predictions),
     }
-    if detector_mode == "rennervate":
+    if detector_mode in ("rennervate", "rennervate-remove"):
         result["detector_condition"] = {
             "mode": detector_mode,
             "mean_filter_kernel_size": RENNERVATE_MEAN_FILTER_KERNEL_SIZE,
@@ -167,6 +177,8 @@ def evaluate_defense(
                 f"{RENNERVATE_MAX_CONSECUTIVE_THRESHOLD}"
             ),
         }
+        if detector_mode == "rennervate-remove":
+            result["detector_condition"]["sanitization"] = "remove positive token ids and decode"
     if successes_with_indicator:
         baseline_rate = baseline_successes / successes_with_indicator
         defended_rate = defended_successes / successes_with_indicator

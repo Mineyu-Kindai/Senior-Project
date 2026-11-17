@@ -2,6 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 import numpy as np
 import torch
@@ -24,11 +25,13 @@ from senior_project.pipeline import (
     evaluate_defense,
 )
 from senior_project.prompt import (
+    EncodedPrompt,
     encode_prompt,
     labels_for_span,
     merge_flagged_spans,
     redact_spans,
 )
+from senior_project.token_removal import generate_with_empty_context, remove_flagged_tokens
 
 
 class CharacterTokenizer:
@@ -79,6 +82,83 @@ class FakeModel(nn.Module):
         return torch.cat((input_ids, response), dim=1)
 
 class PipelineTests(unittest.TestCase):
+    def test_removal_decodes_only_retained_tokens_without_merging_gaps(self):
+        class Tokenizer:
+            def decode(self, tokens, skip_special_tokens, clean_up_tokenization_spaces):
+                return "".join({10: "A", 11: "x", 12: " ", 13: "y", 14: "B\n"}[t] for t in tokens)
+
+        prompt = EncodedPrompt(
+            model_inputs={"input_ids": torch.tensor([[10, 11, 12, 13, 14]])},
+            context_token_indices=[0, 1, 2, 3, 4],
+            context_offsets=[(0, 1), (1, 2), (2, 3), (3, 4), (4, 5)],
+            rendered_text="Ax yB\n",
+        )
+        self.assertEqual(remove_flagged_tokens(Tokenizer(), prompt, "Ax yB", [0, 1, 0, 1, 0]), "A B")
+        self.assertEqual(remove_flagged_tokens(Tokenizer(), prompt, "Ax yB", [0, 0, 0, 0, 0]), "Ax yB")
+        self.assertEqual(remove_flagged_tokens(Tokenizer(), prompt, "Ax yB", [1, 1, 1, 1, 1]), "")
+        with self.assertRaises(ValueError):
+            remove_flagged_tokens(Tokenizer(), prompt, "Ax yB truncated", [0, 0, 0, 0, 0])
+        with self.assertRaises(ValueError):
+            remove_flagged_tokens(Tokenizer(), prompt, "Ax yB", [0, 1])
+
+    def test_removal_mode_uses_same_predictions_even_when_input_is_clean(self):
+        class Tokenizer:
+            def decode(self, tokens, skip_special_tokens, clean_up_tokenization_spaces):
+                return "".join({1: "A", 2: "x", 3: "B"}[t] for t in tokens)
+
+        prompt = EncodedPrompt(
+            model_inputs={"input_ids": torch.tensor([[1, 2, 3]])},
+            context_token_indices=[0, 1, 2],
+            context_offsets=[(0, 1), (1, 2), (2, 3)],
+            rendered_text="AxB",
+        )
+        calls = []
+
+        def generate(tokenizer, model, instruction, context, config, **kwargs):
+            calls.append((context, kwargs))
+            return "answer"
+
+        with (
+            patch("senior_project.pipeline.load_detector", return_value=(None, None, None, 0.5)),
+            patch("senior_project.pipeline.model_device", return_value=torch.device("cpu")),
+            patch("senior_project.pipeline.prepare_prompt", return_value=prompt),
+            patch("senior_project.pipeline.capture_attention_features"),
+            patch("senior_project.pipeline.predict_tokens_rennervate", return_value=[0, 1, 0]) as predict,
+            patch("senior_project.pipeline.generate_answer", side_effect=generate),
+            patch("senior_project.pipeline.generate_with_empty_context", return_value="empty") as empty,
+        ):
+            report = evaluate_defense(
+                [{"user_input": "Task", "external_context": "AxB"}],
+                Tokenizer(), None, {"model_id": "test"}, Path("unused"),
+                detector_mode="rennervate-remove",
+            )
+            predict.return_value = [1, 1, 1]
+            empty_report = evaluate_defense(
+                [{"user_input": "Task", "external_context": "AxB"}],
+                Tokenizer(), None, {"model_id": "test"}, Path("unused"),
+                detector_mode="rennervate-remove",
+            )
+        self.assertEqual(calls, [("AxB", {}), ("AB", {}), ("AxB", {})])
+        empty.assert_called_once()
+        self.assertEqual(empty_report["examples"][0]["sanitized_context"], "")
+        self.assertFalse(report["examples"][0]["input_injected"])
+        self.assertEqual(report["examples"][0]["sanitized_context"], "AB")
+        self.assertEqual(report["detector_condition"]["mode"], "rennervate-remove")
+
+    def test_removal_generates_with_empty_context(self):
+        class Tokenizer(CharacterTokenizer):
+            def __call__(self, text, **kwargs):
+                return {
+                    "input_ids": torch.arange(len(text)).unsqueeze(0),
+                    "attention_mask": torch.ones((1, len(text)), dtype=torch.long),
+                }
+
+        result = generate_with_empty_context(
+            Tokenizer(), FakeModel(), "Task",
+            {"max_input_tokens": 512, "max_new_tokens": 8},
+        )
+        self.assertEqual(result, "OVERRIDE")
+
     def test_rennervate_mean_filter_suppresses_an_isolated_positive_token(self):
         clean_logits = torch.tensor([2.0, 0.0])
         injected_logits = torch.tensor([0.0, 2.0])
