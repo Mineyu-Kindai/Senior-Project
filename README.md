@@ -98,6 +98,25 @@ CLIの既定モデル設定は [configs/model.yaml](./configs/model.yaml) で変
 
 ### 関連度研究のA/B追試
 
+クリーンな外部本文CとプローブPの埋め込みコサイン類似度は、
+`topic_relevance.scorer.topic_relatedness.TopicRelatednessScorer` で計算できます。
+例はリポジトリルートで実行してください。
+
+```python
+from topic_relevance.scorer.topic_relatedness import TopicRelatednessScorer
+
+scorer = TopicRelatednessScorer(device="cpu")
+score = scorer.score("A team measured rainfall.", "What instrument measures rainfall?")
+scores = scorer.score_pairs([("A team measured rainfall.", "What instrument measures rainfall?")])
+```
+
+初回は既定の多言語Sentence Transformerモデルのダウンロードが必要です。
+既定モデルではトークン上限（特殊トークンを含む128）を超える入力を
+自動切り詰めせずエラーにします。暗黙のモデルプロンプトは使いません。
+別モデルでは前処理が異なる場合があるため、使用前に入力長の扱いを検証してください。
+再現性のため`revision`でモデルのリビジョンを固定できます。コサイン類似度は人手による
+話題関連度評価の代替や採用基準ではありません。Aの盲検・確認手順は変更しません。
+
 承認済みの追試条件と自然さを評価に使わない方針は
 [実験プロトコル](./topic_relevance/protocols/ab_followup_20261112.md)を参照してください。
 保存済みマスク介入の再実行前に、生成上限を校正します。
