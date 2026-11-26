@@ -61,7 +61,7 @@ Rennervateを参考に、英語のタスク・攻撃データを使い、単一�
 
 `evaluate` はトークンAccuracy / Precision / Recall / FPRと、`attack_success_indicator` を含むレコードについて未加工・防御後の攻撃成功率を報告します。`defense_reduction` は攻撃成功率の相対減少率です。`--split train` と `--split test` で一つのJSONから分離できます。小さなパイロットセットは動作確認用であり、研究上の性能を主張するには独立した大規模テストデータと適切な評価設計が必要です。
 
-`evaluate` は既定で従来のトークンスコア閾値方式を使います。論文のトークン判定条件を使う場合は `--detector-mode rennervate` を指定してください。この方式は2クラスlogitsを幅5・replicate paddingの平均フィルタで平滑化し、各トークンをargmaxで判定します。最長連続数が5を超える場合に入力全体をInjectedと判定し、その判定とは独立に平滑化後の陽性トークンをマスクします。モデル・学習済み分類器は共通で、従来方式は `--detector-mode threshold` で引き続き利用できます。これは検知条件を合わせる変更であり、既存の隣接範囲の結合や置換によるサニタイズ処理は変更しません。
+`evaluate` は既定で従来のトークンスコア閾値方式を使います。論文のトークン判定に近い条件を使う場合は `--detector-mode rennervate` を指定してください。この方式は2クラスlogitsを幅5・replicate paddingの平均フィルタで平滑化し、各トークンをargmaxで判定します。これは論文のGreedySearchをargmaxと解釈したものです。最長連続数が5を超える場合に入力全体をInjectedと判定し、その判定とは独立に平滑化後の陽性トークンをマスクします。モデル・学習済み分類器は共通で、従来方式は `--detector-mode threshold` で引き続き利用できます。これは検知条件を合わせる変更であり、既存の隣接範囲の結合や置換によるサニタイズ処理は変更しません。
 
 `--detector-mode rennervate-remove` は同じ新検知条件を使い、陽性トークンのIDを除いた残りをデトークン化します。マーカーは挿入せず、入力全体のInjected/Clean判定にかかわらず除去します。結果には除去後の `sanitized_context` を保存します。外部文脈が切り詰められた場合や、文脈の境界を安全に復元できない場合はエラーで停止します。`rennervate` のマーカー置換は変更されません。特徴抽出や分類器は論文と異なるため、論文全体の再現ではありません。
 
@@ -72,6 +72,87 @@ uv run python -m senior_project evaluate \
   --detector-mode rennervate-remove \
   --output data/evaluation_token_removal.json
 ```
+
+`--detector-mode rennervate-filtered-remove` は既存モードとは別の探索用方式です。
+平滑化後の攻撃クラスと正常クラスのlogit差が `--logit-margin` を**超える**
+トークンを陽性とし、陽性が `--min-run-length` 以上連続する箇所だけを除去します。
+既定値はそれぞれ `0.0` と `6` です。入力単位のInjected判定は、短い陽性列を
+除去対象から外す前の陽性列に従来の「最長連続数 > 5」を適用します。
+`token_metrics` はフィルタ前の判定、`removal_token_metrics` は実際の除去対象を示します。
+他の検知器モードは変更されません。
+
+```bash
+uv run python -m senior_project evaluate \
+  --input data/task_samples.json --split test \
+  --detector models/attention_detector_fixed_20261015.pt \
+  --detector-mode rennervate-filtered-remove \
+  --logit-margin 0.0 --min-run-length 6 \
+  --output data/evaluation_filtered_removal.json
+```
+
+既定値は既存の探索用64ブロックで、元の陽性除去に対してプローブ本文とラッパーの
+検知トークン数を各90%以上維持する設定の中から、正常本文の除去文字数を最小化して
+選んだものです。検討した正のlogit差閾値はこの条件を満たしませんでした。
+この選択は攻撃成功率やタスク正答率の改善を保証せず、独立した確認集合でもありません。
+保存スコアによる選択結果と再現手順は
+[開発用選択結果](./topic_relevance/data/experiments/filtered_removal_development_64_v1.json)、
+[選択スクリプト](./topic_relevance/scripts/select_filtered_removal_v1.py)を参照してください。
+
+### 応答時Attentionを使う2段階プーリング検知器
+
+`rennervate-pooling` は、従来の分類器とは別に学習する検知器です。生成した
+応答の先頭最大32トークンから外部文脈トークンへのAttentionを、層・ヘッド・
+応答位置を保って取得します。応答方向とヘッド方向に2段階のattention付き
+平均・標準偏差プーリングを行い、残差ブロックと2クラス分類器で各トークンを
+判定します。公開コードと同様に第0クラスのスコアを幅5で平均し、0以下を
+陽性とします。端では利用できる範囲の平均を使い、陽性の最長連続数が5を
+超えた場合に入力をInjectedと判定します。入力単位の判定に
+かかわらず陽性トークンは除去します。`rennervate-filtered-remove` 固有の
+logit差閾値や短い陽性列を除外する条件は使いません。
+
+```bash
+uv run python -m senior_project collect --architecture rennervate-pooling \
+  --input data/task_samples.json --split train \
+  --output data/response_attention_features.npz
+uv run python -m senior_project train --architecture rennervate-pooling \
+  --features data/response_attention_features.npz \
+  --output models/response_attention_detector.pt --epochs 40 --seed 42
+uv run python -m senior_project evaluate --detector-mode rennervate-pooling \
+  --input data/task_samples.json --split test \
+  --detector models/response_attention_detector.pt \
+  --output data/evaluation_response_attention.json
+```
+
+応答生成がEOSで直ちに終了すると、特徴を取得できないためエラーになります。
+外部文脈が切り詰められた場合など、安全にトークンを除去できないときもエラーに
+なります。特徴ファイルは元の特徴より大きく、収集・評価はLLMの応答生成を伴います。
+チェックポイントにはモデルID・入力長・応答生成上限・訓練サンプルIDを記録し、
+設定が一致しない場合は読み込みを拒否します。
+
+これは先行研究の学習済みモデルではなく、Qwenと手元のデータに対する再学習です。
+論文の主要構造を用いますが、論文のLLM・FIPI訓練データ・2台のA100やバッチ128は
+使わず、各例から最大20トークンを抽出してAdamで学習します。学習時は応答方向を
+32までゼロ埋めし、評価時は実際の応答長を使います。判定は公開コードの
+`e2e_evaluate` に合わせています。論文では2クラスのlogitsにreplicate paddingと
+GreedySearchを適用すると記述しており、公開コードと異なる点に注意してください。
+したがって論文結果の
+完全再現や同等の性能を保証するものではありません。
+
+#### 先行研究との差分
+
+| 項目 | 先行研究 | この検知器 |
+|---|---|---|
+| 基盤LLM | 論文で評価したLlama2、ChatGLM3等 | Qwen2.5-3B-Instruct、CUDAでは4bit量子化 |
+| 学習済み重み・データ | 先行研究の検知器とFIPI訓練100,000件 | 独自に訓練した重みと手元のtrain 50件 |
+| 入力・境界 | 各LLM用の入力形式とトークン境界 | Qwenのチャットテンプレートと文字オフセットで外部文脈を特定 |
+| 応答Attention | 論文では最大32、公開コードではLlama2のみ最大16 | 最大32、生成済みトークンを再入力して取得 |
+| 学習 | 論文はバッチ128。公開設定は16例/ステップ、Adamのwarmup・annealingと勾配クリップ、betas=(0.9, 0.98) | 1例/ステップ、最大20トークンを抽出。Adamの固定学習率1e-3、既定betas=(0.9, 0.999)、スケジューラと勾配クリップなし |
+| 判定 | 公開コードは第0クラスのスコアを端で可変幅の平均後、0以下を陽性と判定。論文はreplicate padding・GreedySearchと記述 | 公開コードの判定に合わせる |
+
+2段階プーリング・残差ブロック・コサイン分類器の構成は公開コードに合わせています。
+学習時の32トークンへのゼロ埋めと、評価時の可変長入力も共通です。ただし、
+モデルや生成条件、訓練データ・最適化の違いにより、同じ重みや性能にはなりません。
+既存の先行研究チェックポイントとこの検知器のチェックポイントは互換ではありません。
 
 同梱の70件はパイプライン確認用の小規模パイロットです。再現可能な初期評価のため、train 50件（正常25・攻撃25）、test 20件（正常10・攻撃10）に分離しています。testにはRennervateの7方式（direct / ignore / completion / escape とその組み合わせ）と先頭・中間・末尾の挿入位置を含めています。これは少数例のholdoutであり、方式ごとの性能を確立するにはデータをさらに増やす必要があります。`label` は注入の有無であり、モデルが攻撃に従ったかどうかではありません。実際の攻撃成功は `attack_success_indicator` の一致で測りますが、応答に部分的な影響があるかは応答も確認してください。
 

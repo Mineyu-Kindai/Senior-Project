@@ -1,3 +1,4 @@
+import math
 from pathlib import Path
 from typing import Any
 
@@ -9,6 +10,8 @@ from torch.nn import functional as F
 
 RENNERVATE_MEAN_FILTER_KERNEL_SIZE = 5
 RENNERVATE_MAX_CONSECUTIVE_THRESHOLD = 5
+FILTERED_REMOVAL_DEFAULT_LOGIT_MARGIN = 0.0
+FILTERED_REMOVAL_DEFAULT_MIN_RUN_LENGTH = 6
 
 
 class AttentionTokenClassifier(nn.Module):
@@ -169,6 +172,54 @@ def predict_tokens_rennervate(
         logits = model((features.to(mean.device) - mean) / std)
         filtered_logits = mean_filter_token_logits(logits, kernel_size)
     return filtered_logits.argmax(dim=1).cpu().tolist()
+
+
+def filter_short_positive_runs(predictions: list[int], min_run_length: int) -> list[int]:
+    if isinstance(min_run_length, bool) or not isinstance(min_run_length, int) or min_run_length < 1:
+        raise ValueError("Minimum run length must be a positive integer")
+    if any(prediction not in (0, 1) for prediction in predictions):
+        raise ValueError("Token predictions must contain only binary labels")
+    filtered = [0] * len(predictions)
+    start = 0
+    while start < len(predictions):
+        if not predictions[start]:
+            start += 1
+            continue
+        end = start + 1
+        while end < len(predictions) and predictions[end]:
+            end += 1
+        if end - start >= min_run_length:
+            filtered[start:end] = [1] * (end - start)
+        start = end
+    return filtered
+
+
+def threshold_smoothed_logits(
+    smoothed_logits: torch.Tensor, logit_margin: float
+) -> list[int]:
+    if smoothed_logits.ndim != 2 or smoothed_logits.shape[1] != 2 or smoothed_logits.shape[0] == 0:
+        raise ValueError("Smoothed logits must have shape [non-empty tokens, 2]")
+    if not math.isfinite(logit_margin) or logit_margin < 0:
+        raise ValueError("Logit margin threshold must be finite and non-negative")
+    if not torch.isfinite(smoothed_logits).all():
+        raise ValueError("Smoothed logits must be finite")
+    margins = smoothed_logits[:, 1] - smoothed_logits[:, 0]
+    return (margins > logit_margin).int().cpu().tolist()
+
+
+def predict_tokens_filtered_removal(
+    model: AttentionTokenClassifier,
+    features: torch.Tensor,
+    mean: torch.Tensor,
+    std: torch.Tensor,
+    logit_margin: float,
+    min_run_length: int,
+) -> tuple[list[int], list[int]]:
+    with torch.inference_mode():
+        logits = model((features.to(mean.device) - mean) / std)
+        smoothed_logits = mean_filter_token_logits(logits)
+    predictions = threshold_smoothed_logits(smoothed_logits, logit_margin)
+    return predictions, filter_short_positive_runs(predictions, min_run_length)
 
 
 def longest_consecutive_positive_run(predictions: list[int]) -> int:

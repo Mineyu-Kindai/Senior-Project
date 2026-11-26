@@ -12,11 +12,14 @@ from senior_project.attention import extract_context_features
 from senior_project.data import load_records, select_split
 from senior_project.detector import (
     detector_metrics,
+    filter_short_positive_runs,
     load_detector,
     longest_consecutive_positive_run,
     mean_filter_token_logits,
     predict_tokens,
+    predict_tokens_filtered_removal,
     rennervate_input_detected,
+    threshold_smoothed_logits,
     train_detector,
 )
 from senior_project.pipeline import (
@@ -82,6 +85,84 @@ class FakeModel(nn.Module):
         return torch.cat((input_ids, response), dim=1)
 
 class PipelineTests(unittest.TestCase):
+    def test_filtered_removal_applies_strict_margin_and_preserves_only_long_runs(self):
+        margins = [3.0] * 5 + [0.0] + [3.0] * 6 + [0.0] + [3.0] * 7
+        logits = torch.tensor([[0.0, value] for value in margins])
+        predictions = threshold_smoothed_logits(logits, 2.0)
+        filtered = filter_short_positive_runs(predictions, 6)
+        self.assertEqual(filtered, [0] * 6 + [1] * 6 + [0] + [1] * 7)
+        self.assertEqual(threshold_smoothed_logits(torch.tensor([[0.0, 2.0], [0.0, 2.1]]), 2.0), [0, 1])
+        self.assertEqual(filter_short_positive_runs([1, 0, 1], 1), [1, 0, 1])
+        self.assertEqual(filter_short_positive_runs([], 6), [])
+        for invalid in (0, -1, True, 1.5):
+            with self.subTest(min_run_length=invalid), self.assertRaises(ValueError):
+                filter_short_positive_runs([1], invalid)
+        with self.assertRaises(ValueError):
+            filter_short_positive_runs([0, 2], 6)
+        for invalid in (-1.0, float("nan"), float("inf")):
+            with self.subTest(logit_margin=invalid), self.assertRaises(ValueError):
+                threshold_smoothed_logits(logits, invalid)
+        with self.assertRaises(ValueError):
+            threshold_smoothed_logits(torch.tensor([[float("nan"), 1.0]]), 0.0)
+
+    def test_filtered_removal_predicts_from_smoothed_logits(self):
+        class FixedDetector(nn.Module):
+            def forward(self, features):
+                return features
+
+        logits = torch.tensor([[0.0, 4.0]] * 6 + [[0.0, -4.0]] * 3)
+        raw, removed = predict_tokens_filtered_removal(
+            FixedDetector(), logits, torch.zeros(2), torch.ones(2), 2.0, 6
+        )
+        self.assertEqual(raw, [1, 1, 1, 1, 1, 0, 0, 0, 0])
+        self.assertEqual(removed, [0] * 9)
+
+    def test_filtered_removal_parameters_are_not_ignored_by_other_modes(self):
+        with self.assertRaisesRegex(ValueError, "require rennervate-filtered-remove"):
+            evaluate_defense([], None, None, {}, Path("unused"), logit_margin=3.0)
+        with self.assertRaisesRegex(ValueError, "positive integer"):
+            evaluate_defense(
+                [], None, None, {}, Path("unused"),
+                detector_mode="rennervate-filtered-remove", min_run_length=0,
+            )
+
+    def test_filtered_removal_reports_detection_and_removal_separately(self):
+        class Tokenizer:
+            def decode(self, tokens, skip_special_tokens, clean_up_tokenization_spaces):
+                return "".join(chr(t) for t in tokens)
+
+        context = "abcdefgh"
+        prompt = EncodedPrompt(
+            model_inputs={"input_ids": torch.tensor([[ord(c) for c in context]])},
+            context_token_indices=list(range(len(context))),
+            context_offsets=[(i, i + 1) for i in range(len(context))],
+            rendered_text=context,
+        )
+        with (
+            patch("senior_project.pipeline.load_detector", return_value=(None, None, None, 0.5)),
+            patch("senior_project.pipeline.model_device", return_value=torch.device("cpu")),
+            patch("senior_project.pipeline.prepare_prompt", return_value=prompt),
+            patch("senior_project.pipeline.capture_attention_features"),
+            patch("senior_project.pipeline.predict_tokens_filtered_removal",
+                  return_value=([1, 1, 1, 1, 1, 1, 0, 0], [0] * 8)),
+            patch("senior_project.pipeline.generate_answer", return_value="answer"),
+        ):
+            report = evaluate_defense(
+                [{"user_input": "Task", "external_context": context}],
+                Tokenizer(), None, {"model_id": "test"}, Path("unused"),
+                detector_mode="rennervate-filtered-remove",
+                logit_margin=3.0, min_run_length=7,
+            )
+        example = report["examples"][0]
+        self.assertTrue(example["input_injected"])
+        self.assertEqual(example["detected_token_count"], 6)
+        self.assertEqual(example["removed_token_count"], 0)
+        self.assertEqual(example["sanitized_context"], context)
+        self.assertEqual(report["detector_condition"]["smoothed_logit_margin_threshold"], 3.0)
+        self.assertEqual(report["detector_condition"]["minimum_removed_run_length"], 7)
+        self.assertEqual(report["token_metrics"]["false_positive"], 6)
+        self.assertEqual(report["removal_token_metrics"]["false_positive"], 0)
+
     def test_removal_decodes_only_retained_tokens_without_merging_gaps(self):
         class Tokenizer:
             def decode(self, tokens, skip_special_tokens, clean_up_tokenization_spaces):
